@@ -1,0 +1,27 @@
+; Highlighting sample for SPAR extension.
+; This file is not meant to be compiled, but to be used as a sample for syntax 
+; highlighting.
+
+r = 8
+c = 8
+tile = 2
+m1 = matrix<r,c> [1,2,3,4,5,6,7,8]
+m2 = matrix<r,c>
+v1 = vector<c>
+v2 = vector<c>
+
+#include "weights.inc"
+
+entry:
+FOR i = 0 TO r STEP tile
+  FOR j = 0 TO c STEP tile
+    LOADM R1, m1[i,j][tile,tile][1,1]
+    LOADV r2, v1[j][tile][1]
+    ADD R3, R1, R2
+    TRANSPOSE R4, R3
+    RELU R5, R4
+    STOREM m2[i,j][tile,tile][1,1], R5
+  END
+END
+
+STOREV v2, r2

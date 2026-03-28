@@ -1,0 +1,25 @@
+# Development/editor metadata
+.vscode/**
+.github/**
+
+# Tests and local examples not needed in packaged extension
+test/**
+examples/**
+
+# Build/tooling artifacts
+node_modules/**
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+package-lock.json
+
+# Source-only docs outside extension runtime path
+scripts/**
+
+# Keep runtime files explicitly (default include behavior applies)
+# - package.json
+# - extension.js
+# - language-configuration.json
+# - syntaxes/**
+# - snippets/**
+# - README.md

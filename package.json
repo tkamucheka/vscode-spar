@@ -1,0 +1,53 @@
+{
+  "name": "spar-assembly",
+  "displayName": "SPAR Assembly",
+  "description": "Syntax highlighting support for SPAR assembly files.",
+  "version": "0.0.1",
+  "publisher": "local",
+  "license": "UNLICENSED",
+  "main": "./extension.js",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "spar",
+        "aliases": [
+          "SPAR",
+          "SPAR Assembly"
+        ],
+        "extensions": [
+          ".spar"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "spar",
+        "scopeName": "source.spar",
+        "path": "./syntaxes/spar.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "spar",
+        "path": "./snippets/spar.json"
+      }
+    ],
+    "configurationDefaults": {
+      "[spar]": {
+        "editor.semanticHighlighting.enabled": true
+      }
+    }
+  },
+  "scripts": {
+    "check": "node --check extension.js && node ./scripts/validate.js",
+    "package:vsix": "npx @vscode/vsce package --no-dependencies",
+    "lint": "echo \"No lint configured\""
+  }
+}

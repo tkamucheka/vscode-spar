@@ -1,0 +1,123 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "SPAR Assembly",
+  "scopeName": "source.spar",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#include_directive" },
+    { "include": "#loop_keywords" },
+    { "include": "#opcodes" },
+    { "include": "#types" },
+    { "include": "#registers" },
+    { "include": "#numbers" },
+    { "include": "#operators" },
+    { "include": "#labels" },
+    { "include": "#identifiers" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.semicolon.spar",
+          "match": ";.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.spar",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.spar",
+              "match": "\\\\."
+            }
+          ]
+        }
+      ]
+    },
+    "include_directive": {
+      "patterns": [
+        {
+          "name": "meta.preprocessor.include.spar",
+          "match": "(#)\\s*([iI][nN][cC][lL][uU][dD][eE])\\b",
+          "captures": {
+            "1": { "name": "punctuation.definition.preprocessor.spar" },
+            "2": { "name": "keyword.control.import.spar" }
+          }
+        }
+      ]
+    },
+    "loop_keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.loop.spar",
+          "match": "\\b(?i:(for|to|step|end))\\b"
+        }
+      ]
+    },
+    "opcodes": {
+      "patterns": [
+        {
+          "name": "keyword.control.spar",
+          "match": "\\b(?i:(loadm|loadv|loadcolv|loadrowv|storem|storev|storerowv|storecolv|add|sub|mult|reduce|transpose|relu|sigmoid|tanh|softmax|print|return))\\b"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "storage.type.tensor.spar",
+          "match": "\\b(?i:(matrix|vector))\\b"
+        }
+      ]
+    },
+    "registers": {
+      "patterns": [
+        {
+          "name": "variable.language.register.spar",
+          "match": "\\b[Rr][0-9]+\\b"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.spar",
+          "match": "\\b[+-]?[0-9]+(\\.[0-9]+)?([eE][+-]?[0-9]+)?\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        { "name": "keyword.operator.assignment.spar", "match": "=" },
+        { "name": "punctuation.separator.comma.spar", "match": "," },
+        { "name": "punctuation.section.brackets.begin.spar", "match": "[\\[<(]" },
+        { "name": "punctuation.section.brackets.end.spar", "match": "[\\]>)]" }
+      ]
+    },
+    "labels": {
+      "patterns": [
+        {
+          "name": "meta.label.spar",
+          "match": "^[ \\t]*([%A-Za-z_][A-Za-z0-9_%]*)\\s*(:)",
+          "captures": {
+            "1": { "name": "entity.name.label.spar" },
+            "2": { "name": "punctuation.separator.label.spar" }
+          }
+        }
+      ]
+    },
+    "identifiers": {
+      "patterns": [
+        {
+          "name": "variable.other.readwrite.spar",
+          "match": "\\b[%A-Za-z_][A-Za-z0-9_%]*\\b"
+        }
+      ]
+    }
+  }
+}

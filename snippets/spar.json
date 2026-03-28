@@ -1,0 +1,67 @@
+{
+  "SPAR: Matrix Definition": {
+    "prefix": "spar-matrix",
+    "description": "Insert a matrix definition",
+    "body": [
+      "${1:name} = matrix<${2:rows},${3:cols}> [${4:0.0}]"
+    ]
+  },
+  "SPAR: Vector Definition": {
+    "prefix": "spar-vector",
+    "description": "Insert a vector definition",
+    "body": [
+      "${1:name} = vector<${2:n}> [${3:0.0}]"
+    ]
+  },
+  "SPAR: FOR Loop": {
+    "prefix": "spar-for",
+    "description": "Insert a structured SPAR FOR loop",
+    "body": [
+      "FOR ${1:i} = ${2:0} TO ${3:N} STEP ${4:1}",
+      "  ${0}",
+      "END"
+    ]
+  },
+  "SPAR: Tile Add Loop": {
+    "prefix": "spar-tile-add",
+    "description": "Insert a tiled add loop skeleton",
+    "body": [
+      "FOR ${1:i} = ${2:0} TO ${3:r} STEP ${4:tile}",
+      "  FOR ${5:j} = ${6:0} TO ${7:c} STEP ${4:tile}",
+      "    LOADM R${8:1}, ${9:m1}[${1},${5}][${4},${4}]",
+      "    LOADM R${10:2}, ${11:m2}[${1},${5}][${4},${4}]",
+      "    ADD R${12:3}, R${8:1}, R${10:2}",
+      "    STOREM ${13:m3}[${1},${5}][${4},${4}], R${12:3}",
+      "  END",
+      "END"
+    ]
+  },
+  "SPAR: Load Matrix": {
+    "prefix": "spar-loadm",
+    "description": "Insert LOADM",
+    "body": [
+      "LOADM R${1:1}, ${2:m}"
+    ]
+  },
+  "SPAR: Store Matrix": {
+    "prefix": "spar-storem",
+    "description": "Insert STOREM",
+    "body": [
+      "STOREM ${1:m}, R${2:1}"
+    ]
+  },
+  "SPAR: Binary Compute Op": {
+    "prefix": "spar-binop",
+    "description": "Insert ADD/SUB/MULT operation",
+    "body": [
+      "${1|ADD,SUB,MULT|} R${2:3}, R${3:1}, R${4:2}"
+    ]
+  },
+  "SPAR: Activation Op": {
+    "prefix": "spar-act",
+    "description": "Insert RELU/SIGMOID/TANH operation",
+    "body": [
+      "${1|RELU,SIGMOID,TANH|} R${2:2}, R${3:1}"
+    ]
+  }
+}
