@@ -62,6 +62,10 @@
     "opcodes": {
       "patterns": [
         {
+          "name": "keyword.control.return.spar",
+          "match": "\\b[Rr][Ee][Tt][Uu][Rr][Nn]\\b"
+        },
+        {
           "name": "keyword.control.spar",
           "match": "\\b(?i:(loadm|loadv|loadcolv|loadrowv|storem|storev|storerowv|storecolv|add|sub|mult|reduce|transpose|relu|sigmoid|tanh|softmax|print|return))\\b"
         }
