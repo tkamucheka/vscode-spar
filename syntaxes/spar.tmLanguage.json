@@ -6,7 +6,9 @@
     { "include": "#comments" },
     { "include": "#strings" },
     { "include": "#include_directive" },
+    { "include": "#map_reference" },
     { "include": "#loop_keywords" },
+    { "include": "#affine_keywords" },
     { "include": "#opcodes" },
     { "include": "#types" },
     { "include": "#registers" },
@@ -51,11 +53,31 @@
         }
       ]
     },
+    "map_reference": {
+      "patterns": [
+        {
+          "name": "entity.name.function.spar",
+          "match": "(#[A-Za-z_][A-Za-z0-9_]*)"
+        }
+      ]
+    },
     "loop_keywords": {
       "patterns": [
         {
           "name": "keyword.control.loop.spar",
           "match": "\\b(?i:(for|to|step|end))\\b"
+        }
+      ]
+    },
+    "affine_keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.spar",
+          "match": "\\b(?i:(map|min|max|floordiv|ceildiv|mod))\\b"
+        },
+        {
+          "name": "variable.language.special.spar",
+          "match": "\\b(?i:[ds][0-9]+)\\b"
         }
       ]
     },
@@ -98,6 +120,7 @@
     "operators": {
       "patterns": [
         { "name": "keyword.operator.assignment.spar", "match": "=" },
+        { "name": "keyword.operator.arithmetic.spar", "match": "[+*\\-]" },
         { "name": "punctuation.separator.comma.spar", "match": "," },
         { "name": "punctuation.section.brackets.begin.spar", "match": "[\\[<(]" },
         { "name": "punctuation.section.brackets.end.spar", "match": "[\\]>)]" }
