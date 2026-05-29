@@ -9,13 +9,15 @@ function activate(context) {
   console.log('[SPAR Assembly] Extension activated');
 
   const tokenTypes = [
-    'keyword',
-    'type',
-    'variable',
-    'number',
-    'string',
-    'comment',
-    'operator'
+    'keyword',    // 0
+    'type',       // 1
+    'variable',   // 2
+    'number',     // 3
+    'string',     // 4
+    'comment',    // 5
+    'operator',   // 6
+    'function',   // 7 – map definitions / map references (#name)
+    'parameter',  // 8 – affine dim/sym identifiers (d0, s0, …)
   ];
   const legend = new vscode.SemanticTokensLegend(tokenTypes, []);
 
@@ -23,13 +25,15 @@ function activate(context) {
     provideDocumentSemanticTokens(document) {
       const builder = new vscode.SemanticTokensBuilder(legend);
 
-      const keywordRe = /\b(?:LOADM|LOADV|LOADCOLV|LOADROWV|STOREM|STOREV|STOREROWV|STORECOLV|ADD|SUB|MULT|REDUCE|TRANSPOSE|RELU|SIGMOID|TANH|SOFTMAX|FOR|TO|STEP|END)\b/gi;
+      const keywordRe = /\b(?:LOADM|LOADV|LOADCOLV|LOADROWV|STOREM|STOREV|STOREROWV|STORECOLV|ADD|SUB|MULT|REDUCE|TRANSPOSE|RELU|SIGMOID|TANH|SOFTMAX|PRINT|RETURN|FOR|TO|STEP|END|MAP|MIN|MAX|FLOORDIV|CEILDIV|MOD)\b/gi;
       const typeRe = /\b(?:matrix|vector)\b/gi;
       const regRe = /\b[Rr][0-9]+\b/g;
       const numRe = /\b[+-]?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?\b/g;
       const strRe = /"([^"\\]|\\.)*"/g;
       const commentRe = /;.*/g;
       const opRe = /=/g;
+      const mapRefRe = /#[%A-Za-z_][A-Za-z0-9_%]*/g;
+      const dimSymRe = /\b[dDsS][0-9]+\b/g;
       const identRe = /\b[%A-Za-z_][A-Za-z0-9_%]*\b/g;
 
       /**
@@ -71,11 +75,13 @@ function activate(context) {
           }
         };
 
-        // Precedence: strings > keywords/types/registers/numbers/operators > identifiers.
+        // Precedence: strings > map refs > keywords/types/registers > dim/sym > numbers/operators > identifiers.
         addMatches(strRe, 4);
-        addMatches(keywordRe, 0);
+        addMatches(mapRefRe, 7);   // #name before keywords so # is captured as part of the token
+        addMatches(keywordRe, 0);  // includes MAP/MIN/MAX/FLOORDIV/CEILDIV/MOD
         addMatches(typeRe, 1);
         addMatches(regRe, 2);
+        addMatches(dimSymRe, 8);   // d0/s0/D0/S0 before generic identifiers
         addMatches(numRe, 3);
         addMatches(opRe, 6);
         addMatches(identRe, 2);
