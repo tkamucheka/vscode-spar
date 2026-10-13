@@ -1,6 +1,10 @@
 'use strict';
 
 const vscode = require('vscode');
+const {
+  activateLanguageServer,
+  deactivateLanguageServer
+} = require('./lsp');
 
 /**
  * @param {import('vscode').ExtensionContext} context
@@ -106,9 +110,13 @@ function activate(context) {
   context.subscriptions.push(
       vscode.languages.registerDocumentSemanticTokensProvider(
           { language: 'spar' }, provider, legend));
+
+  return activateLanguageServer(context);
 }
 
-function deactivate() {}
+function deactivate() {
+  return deactivateLanguageServer();
+}
 
 module.exports = {
   activate,

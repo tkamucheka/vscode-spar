@@ -1,8 +1,8 @@
 {
   "name": "spar-assembly",
   "displayName": "SPAR Assembly",
-  "description": "Syntax highlighting support for SPAR assembly files.",
-  "version": "0.0.1",
+  "description": "SPAR assembly support: highlighting, snippets, and the spar-asm-lsp-server language server.",
+  "version": "0.1.0",
   "publisher": "tkamucheka",
   "license": "MIT",
   "repository": {
@@ -11,7 +11,7 @@
   },
   "main": "./extension.js",
   "engines": {
-    "vscode": "^1.90.0"
+    "vscode": "^1.91.0"
   },
   "categories": [
     "Programming Languages"
@@ -47,11 +47,54 @@
       "[spar]": {
         "editor.semanticHighlighting.enabled": true
       }
+    },
+    "commands": [
+      {
+        "command": "spar.restartServer",
+        "title": "Restart Language Server",
+        "category": "SPAR"
+      }
+    ],
+    "configuration": {
+      "title": "SPAR Assembly",
+      "properties": {
+        "spar.server.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Run spar-asm-lsp-server for diagnostics, hover, navigation, and completion."
+        },
+        "spar.server.path": {
+          "type": "string",
+          "default": "spar-asm-lsp-server",
+          "markdownDescription": "Path to `spar-asm-lsp-server`. A bare name is looked up on `PATH`; `~` and `${workspaceFolder}` are expanded, and a relative path is resolved against the workspace folder."
+        },
+        "spar.server.args": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "markdownDescription": "Extra arguments for the server, e.g. `[\"-log=verbose\"]`."
+        },
+        "spar.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Trace the communication between VS Code and the language server."
+        }
+      }
     }
   },
   "scripts": {
-    "check": "node --check extension.js && node ./scripts/validate.js",
-    "package:vsix": "npx @vscode/vsce package --no-dependencies",
+    "check": "node --check extension.js && node --check lsp.js && node ./scripts/validate.js",
+    "package:vsix": "npx @vscode/vsce package",
     "lint": "echo \"No lint configured\""
+  },
+  "dependencies": {
+    "vscode-languageclient": "10.1.2"
   }
 }

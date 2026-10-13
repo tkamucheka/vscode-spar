@@ -8,7 +8,6 @@ test/**
 examples/**
 
 # Build/tooling artifacts
-node_modules/**
 npm-debug.log*
 yarn.lock
 pnpm-lock.yaml
@@ -24,3 +23,5 @@ scripts/**
 # - syntaxes/**
 # - snippets/**
 # - README.md
+# - lsp.js
+# - node_modules/** (production dependencies: vscode-languageclient)
