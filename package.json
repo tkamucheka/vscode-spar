@@ -3,8 +3,12 @@
   "displayName": "SPAR Assembly",
   "description": "Syntax highlighting support for SPAR assembly files.",
   "version": "0.0.1",
-  "publisher": "local",
-  "license": "UNLICENSED",
+  "publisher": "tkamucheka",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tkamucheka/vscode-spar"
+  },
   "main": "./extension.js",
   "engines": {
     "vscode": "^1.90.0"

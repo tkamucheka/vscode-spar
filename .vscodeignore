@@ -1,6 +1,7 @@
 # Development/editor metadata
 .vscode/**
 .github/**
+.gitignore
 
 # Tests and local examples not needed in packaged extension
 test/**
