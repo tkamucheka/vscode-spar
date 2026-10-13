@@ -61,7 +61,7 @@
         "spar.server.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "Run spar-asm-lsp-server for diagnostics, hover, navigation, and completion."
+          "description": "Run spar-asm-lsp-server for diagnostics, hover, navigation, rename, completion, and formatting."
         },
         "spar.server.path": {
           "type": "string",

@@ -12,9 +12,12 @@ language of the [SPAR](https://github.com/SPAR-Public) processor.
 * Snippets for definitions, loops, and common operations
 * Comment toggling with `;`, bracket matching, and auto-closing of brackets
   and quotes
-* With `spar-asm-lsp-server` installed: diagnostics as you type, hover,
-  go to definition, find references, completion, signature help, the
-  outline, and links on `#include` paths
+* With `spar-asm-lsp-server` installed: diagnostics as you type with quick
+  fixes for misspelled names and opcodes, hover, go to definition, find
+  references and rename across included files, completion, signature help,
+  the outline, workspace symbols, folding, formatting, highlighting of
+  tensors, constants, loop variables and maps by kind, and links on
+  `#include` paths
 
 For Neovim, see
 [tree-sitter-spar](https://github.com/tkamucheka/tree-sitter-spar).
@@ -48,6 +51,15 @@ is opened; without it, highlighting and snippets still work.
 **SPAR: Restart Language Server** restarts it, e.g. after rebuilding; changing
 a `spar.server` setting restarts it automatically. The server analyses saved
 files only, since includes resolve relative to the file's directory.
+
+Rename and find references cover every `.spar` file in the workspace that
+includes the file defining a name, directly or through other files; open
+files are read with their unsaved changes. A rename that would change what
+another name refers to, for example by colliding with an existing
+definition, is refused with the location it would affect. Formatting
+re-indents `FOR` bodies and removes trailing whitespace, and leaves comments,
+operand alignment and multi-line literals as written. While the server runs,
+its semantic tokens replace the extension's lexical ones.
 
 ## Snippets
 

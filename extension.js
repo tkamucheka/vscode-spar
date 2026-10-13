@@ -107,11 +107,26 @@ function activate(context) {
     }
   };
 
-  context.subscriptions.push(
-      vscode.languages.registerDocumentSemanticTokensProvider(
-          { language: 'spar' }, provider, legend));
+  // These lexical tokens stand in for the language server's, which tell
+  // tensors, constants, loop variables and maps apart. VS Code shows one
+  // provider's tokens, so this one is registered only while the server is
+  // not running.
+  /** @type {import('vscode').Disposable | undefined} */
+  let lexicalTokens;
+  const useLexicalTokens = (enabled) => {
+    if (enabled && !lexicalTokens) {
+      lexicalTokens = vscode.languages.registerDocumentSemanticTokensProvider(
+          { language: 'spar' }, provider, legend);
+    } else if (!enabled && lexicalTokens) {
+      lexicalTokens.dispose();
+      lexicalTokens = undefined;
+    }
+  };
+  useLexicalTokens(true);
+  context.subscriptions.push({ dispose: () => useLexicalTokens(false) });
 
-  return activateLanguageServer(context);
+  return activateLanguageServer(
+      context, (running) => useLexicalTokens(!running));
 }
 
 function deactivate() {

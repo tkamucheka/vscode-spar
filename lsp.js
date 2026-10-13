@@ -1,18 +1,22 @@
 'use strict';
 
 // Client for spar-asm-lsp-server, the SPAR assembly language server built
-// with the SPAR toolchain. It provides diagnostics, hover, go to definition,
-// references, completion, signature help, the outline and include links.
-// Highlighting stays with the grammar and the semantic token provider in
-// extension.js, so the extension remains useful without the server.
+// with the SPAR toolchain. It provides diagnostics and quick fixes, hover, go
+// to definition, references, rename, completion, signature help, the
+// outline, folding, formatting, semantic highlighting and include links.
+// Without the server, the grammar and the lexical semantic token provider in
+// extension.js still highlight the file.
 
 const os = require('os');
 const path = require('path');
 const vscode = require('vscode');
-const { LanguageClient } = require('vscode-languageclient/node');
+const { LanguageClient, State } = require('vscode-languageclient/node');
 
 /** @type {LanguageClient | undefined} */
 let client;
+
+/** Called with whether the server is running whenever that changes. */
+let onRunningChanged = (/** @type {boolean} */ _running) => {};
 
 /**
  * Resolve the configured server path: expand `~` and `${workspaceFolder}`,
@@ -54,6 +58,8 @@ async function startClient() {
   // The client id `spar` makes `spar.trace.server` control protocol tracing.
   client = new LanguageClient(
       'spar', 'SPAR Language Server', serverOptions, clientOptions);
+  client.onDidChangeState(
+      (event) => onRunningChanged(event.newState === State.Running));
   try {
     await client.start();
   } catch (error) {
@@ -84,8 +90,12 @@ async function stopClient() {
 
 /**
  * @param {import('vscode').ExtensionContext} context
+ * @param {(running: boolean) => void} [runningChanged] Told whether the
+ *     server is running whenever that changes.
  */
-function activateLanguageServer(context) {
+function activateLanguageServer(context, runningChanged) {
+  if (runningChanged)
+    onRunningChanged = runningChanged;
   context.subscriptions.push(
       vscode.commands.registerCommand('spar.restartServer', async () => {
         await stopClient();
